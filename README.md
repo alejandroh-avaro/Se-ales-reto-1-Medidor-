@@ -1,5 +1,8 @@
 #  Jeronimo Paredes- Alejandro Quenan- Andres Martinez - Ivan Lasso
-#   Se importa las librerias a utlizar
+
+
+# Se importa las librerias a utlizar
+# PyFirmata2 es una biblioteca de Python utilizada para comunicarse con placas Arduino mediante el protocolo Firmata. Permite interactuar con pines y sensores de Arduino directamente desde Python, lo que facilita el control y la adquisición de datos desde hardware conectado.
 from pyfirmata2 import Arduino
 from time import sleep, time
 import numpy as np
