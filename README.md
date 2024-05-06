@@ -23,34 +23,34 @@ while True:
 
     t_i = time()  # Tiempo inicial del bucle
 
-    # Configurar el Arduino para muestrear a una frecuencia correspondiente a T_s (10 ms)
+#Configurar el Arduino para muestrear a una frecuencia correspondiente a T_s (10 ms)
     board.samplingOn(1000 * T_s)
 
-    # Arrays para almacenar las muestras de corriente y voltaje
+# Arrays para almacenar las muestras de corriente y voltaje
     current = np.zeros(N)
     voltage = np.zeros(N)
 
     t0 = time()  # Tiempo inicial de la adquisición de datos
 
-    # Obtención de señales de corriente y voltaje
+# Obtención de señales de corriente y voltaje
     for n in range(N):
-        # Registrar un callback para la lectura de la entrada analógica de corriente
+# Registrar un callback para la lectura de la entrada analógica de corriente
         # y agregar el valor al array 'current' en el índice 'n'
         board.analog[0].register_callback(lambda data: custom_append(current, data * 5, n))
         board.analog[0].enable_reporting()
 
-        # Registrar un callback para la lectura de la entrada analógica de voltaje
-        # y agregar el valor al array 'voltage' en el índice 'n'
+# Registrar un callback para la lectura de la entrada analógica de voltaje
+# y agregar el valor al array 'voltage' en el índice 'n'
         board.analog[1].register_callback(lambda data: custom_append(voltage, data * 5, n))
         board.analog[1].enable_reporting()
 
         sleep(T_s)  # Esperar para la siguiente muestra
 
-    # Deshabilitar la generación de informes para las entradas analógicas
+# Deshabilitar la generación de informes para las entradas analógicas
     board.analog[0].disable_reporting()
     board.analog[1].disable_reporting()
 
-    # Cálculo de potencias
+# Cálculo de potencia instantanea -activa - Energia
     instantaneous_power = current * voltage
     active_power = instantaneous_power.mean()
     tf = time()
@@ -59,7 +59,7 @@ while True:
     Signal_2_rms = np.sqrt(np.mean(np.square(current)))
     apparent_power = Signal_1_rms * Signal_2_rms
 
-    # Actualizar la salida de manera eficiente
+# Actualizar la salida de manera eficiente
     print(f'\rActive Power (P): {active_power:.5f} Watts', end='')
     print(f' | Apparent Power (S): {apparent_power:.5f} VA', end='')
     print(f' | Energy (E): {energy:.5f} mWh', end='')
